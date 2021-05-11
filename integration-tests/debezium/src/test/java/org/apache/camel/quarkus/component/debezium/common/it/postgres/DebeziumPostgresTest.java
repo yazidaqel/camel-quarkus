@@ -24,6 +24,7 @@ import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.camel.quarkus.component.debezium.common.it.AbstractDebeziumTest;
 import org.apache.camel.quarkus.component.debezium.common.it.Type;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,7 +45,7 @@ class DebeziumPostgresTest extends AbstractDebeziumTest {
 
     @BeforeAll
     public static void setUp() throws SQLException {
-        final String jdbcUrl = System.getProperty(Type.postgres.getPropertyJdbc());
+        final String jdbcUrl = ConfigProvider.getConfig().getValue(Type.postgres.getPropertyJdbc(), String.class);
 
         connection = DriverManager.getConnection(jdbcUrl);
     }

@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.apache.camel.quarkus.component.debezium.common.it.AbstractDebeziumTestResource;
-import org.apache.camel.quarkus.component.debezium.common.it.DebeziumSqlserverResource;
 import org.apache.camel.quarkus.component.debezium.common.it.Type;
 import org.jboss.logging.Logger;
 import org.testcontainers.containers.MSSQLServerContainer;
@@ -73,7 +72,7 @@ public class DebeziumSqlserverTestResource extends AbstractDebeziumTestResource<
         try {
             historyFile = Files.createTempFile(getClass().getSimpleName() + "-history-file-", "");
 
-            properties.put(DebeziumSqlserverResource.PROPERTY_DB_HISTORY_FILE, historyFile.toString());
+            properties.put("sql.server.db.history.file", historyFile.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

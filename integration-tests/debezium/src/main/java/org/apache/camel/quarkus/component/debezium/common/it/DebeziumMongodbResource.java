@@ -22,6 +22,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.eclipse.microprofile.config.ConfigProvider;
+
 @Path("/debezium-mongodb")
 @ApplicationScoped
 public class DebeziumMongodbResource extends AbstractDebeziumResource {
@@ -61,8 +63,8 @@ public class DebeziumMongodbResource extends AbstractDebeziumResource {
             String offsetStorageFileName) {
         return Type.mongodb.getComponent() + ":localhost?"
                 + "offsetStorageFileName=" + offsetStorageFileName
-                + "&mongodbUser=" + System.getProperty(Type.mongodb.getPropertyUsername())
-                + "&mongodbPassword=" + System.getProperty(Type.mongodb.getPropertyPassword())
+                + "&mongodbUser=" + ConfigProvider.getConfig().getValue(Type.mongodb.getPropertyUsername(), String.class)
+                + "&mongodbPassword=" + ConfigProvider.getConfig().getValue(Type.mongodb.getPropertyPassword(), String.class)
                 + "&mongodbName=docker-rs"
                 + "&mongodbHosts=" + hostname + ":" + port;
     }

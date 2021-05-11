@@ -22,12 +22,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 @Path("/debezium-mysql")
 @ApplicationScoped
 public class DebeziumMysqlResource extends AbstractDebeziumResource {
-
-    public static final String PROPERTY_DB_HISTORY_FILE = DebeziumMysqlResource.class.getSimpleName()
-            + "_databaseHistoryFileFilename";
 
     //debezium on mysql needs more privileges, therefore it will use root user
     public static final String DB_ROOT_USERNAME = "root";
@@ -35,6 +34,9 @@ public class DebeziumMysqlResource extends AbstractDebeziumResource {
     public DebeziumMysqlResource() {
         super(Type.mysql);
     }
+
+    @ConfigProperty(name = "mysql.server.db.history.file")
+    String dbHistoryFile;
 
     @Path("/receiveEmptyMessages")
     @GET
@@ -58,6 +60,6 @@ public class DebeziumMysqlResource extends AbstractDebeziumResource {
         return super.getEndpoinUrl(hostname, port, DB_ROOT_USERNAME, password, databaseServerName, offsetStorageFileName)
                 //and add specific parameters
                 + "&databaseServerId=223344"
-                + "&databaseHistoryFileFilename=" + System.getProperty(PROPERTY_DB_HISTORY_FILE);
+                + "&databaseHistoryFileFilename=" + dbHistoryFile;
     }
 }

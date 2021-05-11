@@ -22,18 +22,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 @Path("/debezium-sqlserver")
 @ApplicationScoped
 public class DebeziumSqlserverResource extends AbstractDebeziumResource {
-
-    public static final String PROPERTY_DB_HISTORY_FILE = DebeziumSqlserverResource.class.getSimpleName()
-            + "_databaseHistoryFileFilename";
 
     public static final String DB_NAME = "testDB";
 
     public DebeziumSqlserverResource() {
         super(Type.sqlserver);
     }
+
+    @ConfigProperty(name = "sql.server.db.history.file")
+    String dbHistoryFile;
 
     @Path("/receiveAsRecord")
     @GET
@@ -59,6 +61,6 @@ public class DebeziumSqlserverResource extends AbstractDebeziumResource {
             String offsetStorageFileName) {
         return super.getEndpoinUrl(hostname, port, username, password, databaseServerName, offsetStorageFileName)
                 + "&databaseDbname=" + DB_NAME
-                + "&databaseHistoryFileFilename=" + System.getProperty(PROPERTY_DB_HISTORY_FILE);
+                + "&databaseHistoryFileFilename=" + dbHistoryFile;
     }
 }

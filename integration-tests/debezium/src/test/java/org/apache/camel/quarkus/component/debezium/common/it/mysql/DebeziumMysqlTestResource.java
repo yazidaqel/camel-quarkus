@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.apache.camel.quarkus.component.debezium.common.it.AbstractDebeziumTestResource;
-import org.apache.camel.quarkus.component.debezium.common.it.DebeziumMysqlResource;
 import org.apache.camel.quarkus.component.debezium.common.it.Type;
 import org.jboss.logging.Logger;
 import org.testcontainers.containers.MySQLContainer;
@@ -68,7 +67,7 @@ public class DebeziumMysqlTestResource extends AbstractDebeziumTestResource<MySQ
         try {
             historyFile = Files.createTempFile(getClass().getSimpleName() + "-history-file-", "");
 
-            properties.put(DebeziumMysqlResource.PROPERTY_DB_HISTORY_FILE, historyFile.toString());
+            properties.put("mysql.server.db.history.file", historyFile.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
